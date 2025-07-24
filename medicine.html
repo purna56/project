@@ -8,10 +8,10 @@
   body {
     font-family: Arial, sans-serif;
     margin:0; padding:0;
-    background:#f5f7fa;
+    background:#FFFFFF;
   }
   header {
-    background: #007bff;
+    background: #014D4E;
     color: white;
     padding: 0.8rem 2rem;
   }
@@ -87,7 +87,7 @@
   }
   button {
     margin-top:1rem;
-    background:#007bff;
+    background:#014D4E;
     color:white;
     border:none;
     padding:0.7rem 1.5rem;
@@ -110,7 +110,7 @@
     margin-top: 2rem;
   }
   .medicine-card {
-    background:white;
+    background:#FFFFFF;
     border-radius:8px;
     padding:1rem;
     box-shadow: 0 1px 4px rgb(0 0 0 / 0.1);
@@ -126,8 +126,8 @@
     margin: 0 auto 0.5rem;
   }
   .price {
-    font-weight: bold;
-    color: #28a745;
+    font-weight: ;
+    color: #000000;
     margin: 0.5rem 0;
   }
   .cart {
@@ -165,7 +165,7 @@
   #logoutBtn {
     float: right;
     margin-bottom: 1rem;
-    background: #dc3545;
+    background: #ff0000;
   }
   #logoutBtn:hover {
     background: #c82333;
@@ -323,7 +323,7 @@
   <!-- Contact Section -->
   <section id="contactSection" style="max-width:900px; margin: 2rem auto; padding: 0 1rem;">
     <h2>Contact Us</h2>
-    <p>For any inquiries or support, please email us at <a href="mailto:support@pharmacy.com">support@pharmacy.com</a> or call 123-456-7890.</p>
+    <p>For any inquiries or support, please email us at <a href="mailto:support@Mediportal.com">support@Mediportal.com</a> or 9885577277.</p>
   </section>
 
 </main>
@@ -376,40 +376,31 @@
 
   // Sample medicines data
   const medicines = [
-    {
+{
       id: 'med001',
       name: 'Paracetamol      500 mg / 650 mg',
       price: 30,
       image: 'me.png'
-    }, 
-
-
-    {
+}, 
+{
       id: 'med002',
       name: ' Ibuprofen 200 mg / 400 mg',
       price: 100,
       image:'par.png'
-    },
-
-
-
-    {
+},
+{
       id: 'med003',
       name: 'Amoxicillin 250 mg / 500 mg',
       price: 120,
       image: 'am.png'
-    },
-
-
-
-
-    {
+},
+{
       id: 'med004',
       name: 'Cetirizine    10 mg',
       price: 39,
       image: 'po.png'
 },
-    {
+{
       id: 'med005',
       name: 'Cetirizine    10 mg',
       price: 40,
@@ -464,7 +455,7 @@
       image: 'co.png'
 },
 {
-      id: 'med0014',
+      id: 'med014',
       name: 'First Aid Kit',
       price: 300,
       image: 'fak.png'
@@ -518,7 +509,7 @@
         <img src="${med.image}" alt="${med.name}" />
         <h4>${med.name}</h4>
         <div class="price">₹${med.price}</div>
-        <button data-id="${med.id}">Add to Cart</button>
+        <button data-id="${med.id}">Add</button>
       `;
       medicineListEl.appendChild(card);
     });
