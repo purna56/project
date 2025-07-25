@@ -26,6 +26,22 @@
     font-weight: bold;
     font-size: 1.3rem;
   }
+
+.logo {
+  display: flex;
+  align-items:center ;
+  font-weight: bold;
+  font-size: 1.3rem;
+  gap: 0.5rem;
+}
+
+.logo-img {
+  height: 90px;
+  width: 90px;
+  object-fit: contain;
+}
+
+
   .nav-links {
     list-style: none;
     display: flex;
@@ -90,9 +106,9 @@
     background:#014D4E;
     color:white;
     border:none;
-    padding:0.7rem 1.5rem;
+    padding:0.5rem 1.5rem;
     font-size:1rem;
-    border-radius:6px;
+    border-radius:0.5px;
     cursor:pointer;
   }
   button:disabled {
@@ -126,7 +142,7 @@
     margin: 0 auto 0.5rem;
   }
   .price {
-    font-weight: ;
+    font-weight:bold ;
     color: #000000;
     margin: 0.5rem 0;
   }
@@ -149,7 +165,7 @@
   .quantity-controls button {
     margin: 0 0.2rem;
     padding: 0.2rem 0.5rem;
-    font-weight: bold;
+    font-weight:bold;
   }
   #orderSection {
     margin-top: 2rem;
@@ -234,15 +250,17 @@
 <body>
 
 <header>
-  <nav class="nav-bar">
+<div class="logo">
+  <img src="t.png" alt=" " class="logo-img" />
     <div class="logo">MEDIPORTAL(Medicine To Doorstep)</div>
-    <ul class="nav-links">
-      <li><a href="#appSection" id="homeLink">Home</a></li>
+  <nav class="nav-bar">
+ <ul class="nav-links">
+     <li><a href="#appSection" id="homeLink">Home</a></li>
       <li><a href="#contactSection" id="contactLink">Contact Us</a></li>
       <li><a id="orderTrackingLink">Order Tracking</a></li>
       <li class="cart-link">
         <a href="#cartSection">
-          🛒 Cart <span id="cartCount">0</span>
+          🛒 Cart <span id="cartCount">0</span>						
         </a>
       </li>
     </ul>
@@ -398,13 +416,13 @@
       id: 'med004',
       name: 'Cetirizine    10 mg',
       price: 39,
-      image: 'po.png'
+      image: 'v.png'
 },
 {
       id: 'med005',
-      name: 'Cetirizine    10 mg',
-      price: 40,
-      image: 'am.png'
+      name: 'Himalaya Ashvagandha General Wellness, 60 Tablets',
+      price: 240,
+      image: 'his.png'
 },
 {
       id: 'med006',
@@ -459,6 +477,48 @@
       name: 'First Aid Kit',
       price: 300,
       image: 'fak.png'
+},
+{
+      id: 'med015',
+      name: 'Vicks Vaporub Xtra Strong 50 ml',
+      price: 200,
+      image: 'vic.png'
+},
+{
+      id: 'med016',
+      name: 'Dettol Lime Fresh Disinfectant Liquid 200 ml',
+      price: 149,
+      image: 'det.png'
+},
+{
+      id: 'med017',
+      name: 'Pedigree Chicken & Milk Dry Food for Puppy Dog 2.8 kg',
+      price: 650,
+      image: 'ped.png'
+},
+{
+      id: 'med018',
+      name: 'Lifebuoy Total Hand Sanitizer 50 ml',
+      price: 50,
+      image: 'lb.png'
+},
+{
+      id: 'med019',
+      name: 'Digital Thermometer',
+      price: 100,
+      image: 'dt.png'
+},
+{
+      id: 'med020',
+      name: 'CERELAC Baby Food Cereal | Multigrain & Fruits for 12 to 24 Months Baby | Source of Iron',
+      price: 330,
+      image: 'nes.png'
+},
+{
+      id: 'med021',
+      name: 'Prega News Pregnancy Test Kit',
+      price: 60,
+      image: 'prg.png'
 }
   ];
 
