@@ -1,3 +1,3 @@
 # project
 WebProject Description
-medicine
+medicine.html
