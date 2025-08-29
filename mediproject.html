@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pharmacy Delivery System</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin:0; padding:0;
+    background:#FFFFFF;
+  }
+  header {
+    background: #014D4E;
+    color: white;
+    padding: 0.8rem 2rem;
+  }
+  .nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .logo {
+    font-weight: bold;
+    font-size: 1.3rem;
+  }
+
+.logo {
+  display: flex;
+  align-items:center ;
+  font-weight: bold;
+  font-size: 1.3rem;
+  gap: 0.5rem;
+}
+
+.logo-img {
+  height: 90px;
+  width: 90px;
+  object-fit: contain;
+}
+
+
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+    margin: 0;
+    padding: 0;
+  }
+  .nav-links li a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+    cursor: pointer;
+  }
+  .nav-links li a:hover {
+    color: #cce5ff;
+  }
+  .cart-link {
+    position: relative;
+  }
+  #cartCount {
+    background: #28a745;
+    border-radius: 50%;
+    padding: 0 7px;
+    margin-left: 5px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    vertical-align: top;
+  }
+
+  main {
+    max-width:900px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+  h1,h2 {
+    margin:0 0 1rem 0;
+  }
+  form {
+    max-width:400px;
+    margin: 1rem auto;
+    background:#fff;
+    padding:1rem 2rem;
+    border-radius:8px;
+    box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+  }
+  label {
+    display:block;
+    margin-top:1rem;
+  }
+  input, textarea {
+    width: 100%;
+    padding:0.5rem;
+    margin-top:0.3rem;
+    border-radius:4px;
+    border:1px solid #ccc;
+    font-size:1rem;
+  }
+  button {
+    margin-top:1rem;
+    background:#014D4E;
+    color:white;
+    border:none;
+    padding:0.5rem 1.5rem;
+    font-size:1rem;
+    border-radius:0.5px;
+    cursor:pointer;
+  }
+  button:disabled {
+    background:#7ea9e1;
+    cursor: not-allowed;
+  }
+  .error {
+    color:red;
+    margin-top:0.5rem;
+  }
+  .medicine-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(160px,1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  .medicine-card {
+    background:#FFFFFF;
+    border-radius:8px;
+    padding:1rem;
+    box-shadow: 0 1px 4px rgb(0 0 0 / 0.1);
+    text-align:center;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .medicine-card img {
+    max-width: 100px;
+    height: 100px;
+    object-fit: contain;
+    margin: 0 auto 0.5rem;
+  }
+  .price {
+    font-weight:bold ;
+    color: #000000;
+    margin: 0.5rem 0;
+  }
+  .cart {
+    margin-top: 2rem;
+    background:#fff;
+    border-radius:8px;
+    padding:1rem 2rem;
+    box-shadow: 0 1px 5px rgb(0 0 0 / 0.1);
+  }
+  .cart-item {
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+  .cart-item span {
+    flex:1;
+  }
+  .quantity-controls button {
+    margin: 0 0.2rem;
+    padding: 0.2rem 0.5rem;
+    font-weight:bold;
+  }
+  #orderSection {
+    margin-top: 2rem;
+    background:#fff;
+    border-radius:8px;
+    padding:1rem 2rem;
+    box-shadow: 0 1px 5px rgb(0 0 0 / 0.1);
+  }
+  #qrCodeContainer {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  #logoutBtn {
+    float: right;
+    margin-bottom: 1rem;
+    background: #ff0000;
+  }
+  #logoutBtn:hover {
+    background: #c82333;
+  }
+
+  /* Registration/Login container */
+  #authContainer {
+    max-width: 420px;
+    margin: 2rem auto;
+    background: white;
+    border-radius: 8px;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+  }
+  #authContainer h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  #registerForm, #loginFormAuth {
+    margin-bottom: 2rem;
+  }
+  #registerForm button, #loginFormAuth button {
+    width: 100%;
+  }
+  #authContainer input {
+    margin-top: 0.5rem;
+  }
+
+  /* Modal styles */
+  #orderTrackingModal {
+    display: none; /* hidden by default */
+    position: fixed;
+    z-index: 999;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+  }
+  #orderTrackingModalContent {
+    background: white;
+    margin: 10% auto;
+    padding: 1.5rem 2rem;
+    border-radius: 8px;
+    max-width: 400px;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+  #orderTrackingModalContent h3 {
+    margin-top: 0;
+  }
+  #closeModalBtn {
+    position: absolute;
+    top: 10px; right: 15px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+  }
+  #trackStatus {
+    margin-top: 1rem;
+    font-weight: bold;
+    color: #007bff;
+  }
+</style>
+</head>
+<body>
+
+<header>
+<div class="logo">
+  <img src="t.png" alt=" " class="logo-img" />
+    <div class="logo">MEDIPORTAL(Medicine To Doorstep)</div>
+  <nav class="nav-bar">
+ <ul class="nav-links">
+     <li><a href="#appSection" id="homeLink">Home</a></li>
+      <li><a href="#contactSection" id="contactLink">Contact Us</a></li>
+      <li><a id="orderTrackingLink">Order Tracking</a></li>
+      <li class="cart-link">
+        <a href="#cartSection">
+          🛒 Cart <span id="cartCount">0</span>						
+        </a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+
+  <!-- AUTH CONTAINER: Registration + Login -->
+  <section id="authContainer">
+    <h2>Create Account</h2>
+    <form id="registerForm">
+      <label>Full Name:
+        <input type="text" id="fullname" placeholder="Full Name" required />
+      </label>
+      <label>Email:
+        <input type="email" id="emailReg" placeholder="Email" required />
+      </label>
+      <label>Password:
+        <input type="password" id="passwordReg" placeholder="Password" required />
+      </label>
+      <button type="submit">Create Account</button>
+    </form>
+
+    <h2>Login</h2>
+    <form id="loginFormAuth">
+      <label>Email:
+        <input type="email" id="emailLogin" placeholder="Email" required />
+      </label>
+      <label>Password:
+        <input type="password" id="passwordLogin" placeholder="Password" required />
+      </label>
+      <button type="submit">Login</button>
+    </form>
+  </section>
+
+  <!-- Main app area (hidden initially) -->
+  <section id="appSection" style="display:none;">
+    <button id="logoutBtn">Logout</button>
+    <h1>Welcome, <span id="userNameDisplay"></span>!</h1>
+
+    <h2>Available Medicines</h2>
+<div style="margin: 1rem 0;">
+  <input type="text" id="searchInput" placeholder="Search medicines..." style="width: 100%; padding: 0.5rem; font-size: 1rem; border: 1px solid #ccc; border-radius: 4px;" />
+</div>
+
+    <div class="medicine-list" id="medicineList">
+      <!-- Medicines dynamically inserted here -->
+    </div>
+
+    <section class="cart" id="cartSection">
+      <h2>Your Cart</h2>
+      <div id="cartItemsContainer">
+        <!-- Cart items listed here -->
+      </div>
+      <div id="cartTotal"></div>
+    </section> 
+
+    <section id="orderSection">
+      <h2>Place Your Order</h2>
+   
+   <form id="orderForm">
+    <b><label>Payment Method:</b>
+ <b> <select id="paymentMethod" required></b>
+    <option value="">-- Select Payment Method --</option>
+    <option value="cod">Cash on Delivery</option>
+    <!-- Future: <option value="online">Online Payment</option> -->
+  </select>
+</label>
+	
+        <label>Full Name:
+          <input type="text" id="deliveryFullName" placeholder="Enter your full name" required />
+        </label>
+        <label>Phone Number:
+          <input type="tel" id="deliveryPhone" placeholder="Enter your phone number" pattern="[0-9]{10}" title="Enter a 10-digit phone number" required />
+        </label>
+        <label>Pincode:
+          <input type="text" id="deliveryPincode" placeholder="Enter your pincode" pattern="[0-9]{5,6}" title="Enter a valid pincode" required />
+        </label>
+        <label>Delivery Address:
+          <textarea id="deliveryAddress" rows="3" placeholder="Enter your delivery address" required></textarea>
+        </label>
+        <button type="submit" id="placeOrderBtn" disabled>Place Order</button>
+      </form>
+      <div id="orderError" class="error"></div>
+    </section>
+
+    <section id="qrCodeContainer"></section>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contactSection" style="max-width:900px; margin: 2rem auto; padding: 0 1rem;">
+    <h2>Contact Us</h2>
+    <p>For any inquiries or support, please email us at <a href="mailto:support@Mediportal.com">support@Mediportal.com</a> or 9885577277.</p>
+  </section>
+
+</main>
+
+<!-- Order Tracking Modal -->
+<div id="orderTrackingModal">
+  <div id="orderTrackingModalContent">
+    <span id="closeModalBtn">&times;</span>
+    <h3>Track Your Order</h3>
+    <form id="trackingForm">
+      <label>Enter your Order ID:
+        <input type="text" id="trackOrderId" placeholder="Order ID" required />
+      </label>
+      <button type="submit">Track</button>
+    </form>
+    <div id="trackStatus"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+<script>
+  const medicineListEl = document.getElementById('medicineList');
+  const cartItemsContainer = document.getElementById('cartItemsContainer');
+  const cartCountEl = document.getElementById('cartCount');
+  const cartTotalEl = document.getElementById('cartTotal');
+  const placeOrderBtn = document.getElementById('placeOrderBtn');
+  const orderErrorEl = document.getElementById('orderError');
+  const qrCodeContainer = document.getElementById('qrCodeContainer');
+  const deliveryFullNameEl = document.getElementById('deliveryFullName');
+  const deliveryPhoneEl = document.getElementById('deliveryPhone');
+  const deliveryPincodeEl = document.getElementById('deliveryPincode');
+  const deliveryAddressEl = document.getElementById('deliveryAddress');
+  const orderForm = document.getElementById('orderForm');
+
+const searchInput = document.getElementById('searchInput');
+searchInput.addEventListener('input', () => {
+  const searchTerm = searchInput.value.trim();
+  renderMedicines(searchTerm);
+});
+
+
+  // Authentication elements
+  const authContainer = document.getElementById('authContainer');
+  const appSection = document.getElementById('appSection');
+  const registerForm = document.getElementById('registerForm');
+  const loginFormAuth = document.getElementById('loginFormAuth');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const userNameDisplay = document.getElementById('userNameDisplay');
+
+  // Order Tracking Modal Elements
+  const orderTrackingModal = document.getElementById('orderTrackingModal');
+  const orderTrackingLink = document.getElementById('orderTrackingLink');
+  const closeModalBtn = document.getElementById('closeModalBtn');
+  const trackingForm = document.getElementById('trackingForm');
+  const trackOrderIdInput = document.getElementById('trackOrderId');
+  const trackStatusEl = document.getElementById('trackStatus');
+
+  // Sample medicines data
+  const medicines = [
+{
+      id: 'med001',
+      name: 'Paracetamol      500 mg / 650 mg',
+      price: 30,
+      image: 'me.png'
+}, 
+{
+      id: 'med002',
+      name: ' Ibuprofen 200 mg / 400 mg',
+      price: 100,
+      image:'par.png'
+},
+{
+      id: 'med003',
+      name: 'Amoxicillin 250 mg / 500 mg',
+      price: 120,
+      image: 'am.png'
+},
+{
+      id: 'med004',
+      name: 'Cetirizine    10 mg',
+      price: 39,
+      image: 'v.png'
+},
+{
+      id: 'med005',
+      name: 'Himalaya Ashvagandha General Wellness, 60 Tablets',
+      price: 240,
+      image: 'his.png'
+},
+{
+      id: 'med006',
+      name: 'Omeprazole – 20 mg or 40 mg ',
+      price: 50,
+      image: 'om.png'
+},
+{
+      id: 'med007',
+      name: 'Aspirin – 75 mg',
+      price: 39,
+      image: 'as.png'
+},
+{
+ id: 'med008',
+      name: 'Pantoprazole – 40 mg',
+      price: 25,
+      image: 'pa.png'
+},
+{
+ id: 'med009',
+      name: 'Salbutamol Syrup -2 mg/5 ml',
+      price: 150,
+      image: 'sal.png'
+},
+{
+ id: 'med010',
+      name: 'Domperidone Syrup-5 mg/5 ml',
+      price: 120,
+      image: 'dom.png'
+},
+{
+ id: 'med011',
+      name: 'Levocetirizine Syrup-2.5 mg/5 ml	',
+      price: 95,
+      image: 'lev.png'
+},
+{
+ id: 'med012',
+      name: 'Cefixime Dry Syrup-100 mg/5 ml ',
+      price: 175,
+      image: 'cef.png'
+},
+{
+      id: 'med0013',
+      name: 'Condom',
+      price: 130,
+      image: 'co.png'
+},
+{
+      id: 'med014',
+      name: 'First Aid Kit',
+      price: 300,
+      image: 'fak.png'
+},
+{
+      id: 'med015',
+      name: 'Vicks Vaporub Xtra Strong 50 ml',
+      price: 200,
+      image: 'vic.png'
+},
+{
+      id: 'med016',
+      name: 'Dettol Lime Fresh Disinfectant Liquid 200 ml',
+      price: 149,
+      image: 'det.png'
+},
+{
+      id: 'med017',
+      name: 'Pedigree Chicken & Milk Dry Food for Puppy Dog 2.8 kg',
+      price: 650,
+      image: 'ped.png'
+},
+{
+      id: 'med018',
+      name: 'Lifebuoy Total Hand Sanitizer 50 ml',
+      price: 50,
+      image: 'lb.png'
+},
+{
+      id: 'med019',
+      name: 'Digital Thermometer',
+      price: 100,
+      image: 'dt.png'
+},
+{
+      id: 'med020',
+      name: 'CERELAC Baby Food Cereal | Multigrain & Fruits for 12 to 24 Months Baby | Source of Iron',
+      price: 330,
+      image: 'nes.png'
+},
+{
+      id: 'med021',
+      name: 'Prega News Pregnancy Test Kit',
+      price: 60,
+      image: 'prg.png'
+}
+  ];
+
+  let cart = {};
+  let orders = {}; // Store orders by orderId
+  let currentUser = null;
+
+  // Utility functions for localStorage persistence
+  function saveCart() {
+    if(currentUser) {
+      localStorage.setItem(`cart_${currentUser.email}`, JSON.stringify(cart));
+    }
+  }
+  function loadCart() {
+    if(currentUser) {
+      const storedCart = localStorage.getItem(`cart_${currentUser.email}`);
+      if(storedCart) {
+        cart = JSON.parse(storedCart);
+      } else {
+        cart = {};
+      }
+    } else {
+      cart = {};
+    }
+  }
+  function saveOrders() {
+    localStorage.setItem('orders', JSON.stringify(orders));
+  }
+  function loadOrders() {
+    const storedOrders = localStorage.getItem('orders');
+    if(storedOrders) {
+      orders = JSON.parse(storedOrders);
+    }
+  }
+
+  // Generate unique order ID
+  function generateOrderId() {
+    return 'ORD' + Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
+  }
+
+  // Render medicine list
+  // Render medicine list with optional search filter
+function renderMedicines(searchTerm = '') {
+  medicineListEl.innerHTML = '';
+  const filteredMedicines = medicines.filter(med =>
+    med.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  if (filteredMedicines.length === 0) {
+    medicineListEl.innerHTML = '<p>No medicines found.</p>';
+    return;
+  }
+
+  filteredMedicines.forEach(med => {
+    const card = document.createElement('div');
+    card.className = 'medicine-card';
+
+    const quantity = cart[med.id] || 0;
+
+    card.innerHTML = `
+      <img src="${med.image}" alt="${med.name}" />
+      <h4>${med.name}</h4>
+      <div class="price">₹${med.price}</div>
+      <div id="controls_${med.id}">
+        ${quantity === 0
+          ? `<button data-id="${med.id}" class="add-btn">Add</button>`
+          : `
+            <div class="quantity-controls">
+              <button data-action="decrease" data-id="${med.id}">-</button>
+              <span>${quantity}</span>
+              <button data-action="increase" data-id="${med.id}">+</button>
+            </div>
+          `
+        }
+      </div>
+    `;
+    medicineListEl.appendChild(card);
+  });
+}
+
+
+  // Update cart count and render cart items
+  function updateCart() {
+    let totalItems = 0;
+    let totalPrice = 0;
+    cartItemsContainer.innerHTML = '';
+    for (const medId in cart) {
+      const quantity = cart[medId];
+      const med = medicines.find(m => m.id === medId);
+      if (!med) continue;
+      totalItems += quantity;
+      totalPrice += med.price * quantity;
+
+      const itemDiv = document.createElement('div');
+      itemDiv.className = 'cart-item';
+      itemDiv.innerHTML = `
+        <span>${med.name}</span>
+        <span>₹${med.price}</span>
+        <div class="quantity-controls">
+          <button data-action="decrease" data-id="${med.id}">-</button>
+          <span>${quantity}</span>
+          <button data-action="increase" data-id="${med.id}">+</button>
+          <button data-action="remove" data-id="${med.id}">🗑</button>
+        </div>
+      `;
+      cartItemsContainer.appendChild(itemDiv);
+    }
+    cartCountEl.textContent = totalItems;
+    cartTotalEl.textContent = `Total: ₹${totalPrice}`;
+
+    // Enable/disable place order button based on cart and form validation
+    checkOrderButtonState();
+
+    saveCart();
+  }
+
+  // Add medicine to cart
+medicineListEl.addEventListener('click', e => {
+  const medId = e.target.getAttribute('data-id');
+  const action = e.target.getAttribute('data-action');
+
+  if (!medId) return;
+
+  if (action === 'increase') {
+    cart[medId]++;
+  } else if (action === 'decrease') {
+    if (cart[medId] > 1) {
+      cart[medId]--;
+    } else {
+      delete cart[medId];
+    }
+  } else {
+    // Default "Add" button behavior
+    if (cart[medId]) {
+      cart[medId]++;
+    } else {
+      cart[medId] = 1;
+    }
+  }
+
+  updateCart();
+  renderMedicines(searchInput.value.trim()); // Rerender with search term
+});
+
+
+  // Cart quantity controls
+  cartItemsContainer.addEventListener('click', e => {
+    const medId = e.target.getAttribute('data-id');
+    const action = e.target.getAttribute('data-action');
+    if (!medId || !action) return;
+
+    if (action === 'increase') {
+      cart[medId]++;
+    } else if (action === 'decrease') {
+      if(cart[medId] > 1) {
+        cart[medId]--;
+      } else {
+        delete cart[medId];
+      }
+    } else if (action === 'remove') {
+      delete cart[medId];
+    }
+    updateCart();
+  });
+
+  // Check if order form inputs are valid and cart is not empty to enable Place Order button
+  function checkOrderButtonState() {
+    const fullNameValid = deliveryFullNameEl.value.trim().length > 0;
+    const phoneValid = deliveryPhoneEl.validity.valid;
+    const pincodeValid = deliveryPincodeEl.validity.valid;
+    const addressValid = deliveryAddressEl.value.trim().length > 0;
+    const cartNotEmpty = Object.keys(cart).length > 0;
+
+    placeOrderBtn.disabled = !(fullNameValid && phoneValid && pincodeValid && addressValid && cartNotEmpty);
+  }
+
+  // Listen for input changes in delivery form to update button state
+  [deliveryFullNameEl, deliveryPhoneEl, deliveryPincodeEl, deliveryAddressEl].forEach(el => {
+    el.addEventListener('input', checkOrderButtonState);
+  });
+
+  // Handle order form submission
+  orderForm.addEventListener('submit', e => {
+    e.preventDefault();
+    orderErrorEl.textContent = '';
+ 
+    orders[orderId] = orderDetails;
+    saveOrders();
+
+    // Clear cart and form
+    cart = {};
+    updateCart();
+    orderForm.reset();
+    checkOrderButtonState();
+
+    // Show QR code with order ID
+    qrCodeContainer.innerHTML = `<h3>Your Order ID: ${orderId}</h3><div id="qrcode"></div>`;
+    QRCode.toCanvas(document.getElementById('qrcode'), orderId, function (error) {
+      if (error) console.error(error);
+    });
+
+    alert(`Order placed successfully! Your Order ID is ${orderId}. Use it to track your order.`);
+  });
+
+  // Order Tracking Modal handlers
+  orderTrackingLink.addEventListener('click', () => {
+    orderTrackingModal.style.display = 'block';
+    trackOrderIdInput.value = '';
+    trackStatusEl.textContent = '';
+  });
+  closeModalBtn.addEventListener('click', () => {
+    orderTrackingModal.style.display = 'none';
+  });
+  window.addEventListener('click', (e) => {
+    if(e.target === orderTrackingModal) {
+      orderTrackingModal.style.display = 'none';
+    }
+  });
+  trackingForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const orderId = trackOrderIdInput.value.trim();
+    if(!orderId) {
+      trackStatusEl.textContent = 'Please enter a valid Order ID.';
+      return;
+    }
+    if(orders[orderId]) {
+      const order = orders[orderId];
+   trackStatusEl.textContent = `Order Status: ${order.status} | Payment: ${order.paymentMethod}`;
+
+    } else {
+      trackStatusEl.textContent = 'Order ID not found.';
+    }
+  });
+
+  // Registration
+  registerForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const fullname = document.getElementById('fullname').value.trim();
+    const email = document.getElementById('emailReg').value.trim().toLowerCase();
+    const password = document.getElementById('passwordReg').value;
+
+    if(!fullname || !email || !password) {
+      alert('Please fill all registration fields.');
+      return;
+    }
+
+    // Check if user exists
+    if(localStorage.getItem(`user_${email}`)) {
+      alert('User with this email already exists.');
+      return;
+    }
+
+    const userObj = { fullname, email, password };
+    localStorage.setItem(`user_${email}`, JSON.stringify(userObj));
+    alert('Account created successfully! Please login.');
+    registerForm.reset();
+  });
+
+  // Login
+  loginFormAuth.addEventListener('submit', e => {
+    e.preventDefault();
+    const email = document.getElementById('emailLogin').value.trim().toLowerCase();
+    const password = document.getElementById('passwordLogin').value;
+
+    const userStr = localStorage.getItem(`user_${email}`);
+    if(!userStr) {
+      alert('No account found with this email.');
+      return;
+    }
+    const userObj = JSON.parse(userStr);
+    if(userObj.password !== password) {
+      alert('Incorrect password.');
+      return;
+    }
+
+    currentUser = userObj;
+    authContainer.style.display = 'none';
+    appSection.style.display = 'block';
+    userNameDisplay.textContent = currentUser.fullname;
+    loadCart();
+    loadOrders();
+    renderMedicines();
+    updateCart();
+  });
+
+  // Logout
+  logoutBtn.addEventListener('click', () => {
+    currentUser = null;
+    cart = {};
+    authContainer.style.display = 'block';
+    appSection.style.display = 'none';
+    cartCountEl.textContent = '0';
+    qrCodeContainer.innerHTML = '';
+  });
+
+  // Initialize app for first time or logged out
+  function initApp() {
+    authContainer.style.display = 'block';
+    appSection.style.display = 'none';
+  }
+
+  initApp();
+
+</script>
+
+</body>
+</html>
